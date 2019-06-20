@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  CVMVVM
+
+  Created by Liber Alfonso on 6/19/19.
+  Copyright © 2019 LAC. All rights reserved.
+*/
+
+"Loading_legend" = "Loading...";
+"My_CV_legend" = "My CV";
+
+
+"Summary_section_title" = "Summary";
+"Experience_section_title" = "Experience";
+"Skills_section_title" = "Skills";
