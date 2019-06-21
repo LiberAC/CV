@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Model for the UI elements and their values
 class CVListViewModel {
     let title = Watcher<String>(value: NSLocalizedString("Loading_legend", comment: ""))
     let isLoading = Watcher<Bool>(value: false)

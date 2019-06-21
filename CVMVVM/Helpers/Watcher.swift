@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// An Observer for the UI elements
 class Watcher<T> {
     
     private var valueChanged: ((T) -> Void)?
@@ -18,9 +19,7 @@ class Watcher<T> {
     
     var value: T {
         didSet {
-            DispatchQueue.main.async {
-                self.valueChanged?(self.value)
-            }
+            self.valueChanged?(self.value)
         }
     }
     

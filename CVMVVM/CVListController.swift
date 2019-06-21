@@ -8,18 +8,20 @@
 
 import Foundation
 
+
+/// Localized names for the different sections
 enum SectionsName: String {
     case summary = "Summary_section_title"
     case jobs = "Experience_section_title"
     case skills = "Skills_section_title"
     
-    
+    /**
+     Returns the localized names for the sections
+     
+     - Returns: The localize string name
+     */
     func localizedString() -> String {
         return NSLocalizedString(self.rawValue, comment: "")
-    }
-    
-    static func getTitleFor(title : SectionsName) -> String {
-        return title.localizedString()
     }
 }
 
@@ -30,6 +32,9 @@ class CVListController {
         self.viewModel = viewModel
     }
     
+    /**
+     Initialize the values and calls the APIClient to retrieve the CVData
+     */
     func start() {
         self.viewModel.isLoading.value = true
         self.viewModel.isTableViewHidden.value = true
@@ -49,6 +54,12 @@ class CVListController {
         })
     }
     
+    /**
+     Create the view models
+     
+     - Parameters:
+        - cv: A CVData object that contains the data to create the models.
+     */
     func createViewModels(cv: CVData) {
         let summaryRowViewModel = SummaryCellViewModel.init(summary: cv.summary)
         let summarySectionViewModel = SectionViewModel.init(rowViewModels: [summaryRowViewModel], headerTitle: SectionsName.summary.localizedString())

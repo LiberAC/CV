@@ -9,26 +9,59 @@
 import XCTest
 
 class CVMVVMUITests: XCTestCase {
+    
+    var app: XCUIApplication!
 
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+        super.setUp()
+        
         continueAfterFailure = false
-
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        
+        app = XCUIApplication()
     }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
+    
     func testRowNumber() {
-        let table = XCUIApplication().tables
+        app.launch()
+        _ = app.waitForExistence(timeout: 5)
+        let table = app.tables
+        XCTAssertTrue(table.count == 1)
         XCTAssertEqual(table.cells.count, 6, "There should be 6 rows")
     }
+    
+    func testStatusLabel() {
+        app.launch()
+        _ = app.waitForExistence(timeout: 5)
+        let statusLabel = app.staticTexts["My CV"]
+        XCTAssertEqual(statusLabel.exists, true)
+    }
+    
+    func testImages() {
+        app.launch()
+        _ = app.waitForExistence(timeout: 5)
+        let table = app.tables
+        let images = table.images
+        XCTAssertEqual(images.count, 2, "There should be 2 images")
+    }
+    
+    
+    func testSections() {
+        app.launch()
+        _ = app.waitForExistence(timeout: 5)
+        let table = app.tables
+        let sectionSkill = table.otherElements["Skills"]
+        XCTAssertEqual(sectionSkill.exists, true)
+        
+        let sectionSummary = table.otherElements["Summary"]
+        XCTAssertEqual(sectionSummary.exists, true)
+        
+        app.swipeUp()
+        
+        let sectionJobs = table.otherElements["Experience"]
+        XCTAssertEqual(sectionJobs.exists, true)
+    }
+    
+    
 
 }
+

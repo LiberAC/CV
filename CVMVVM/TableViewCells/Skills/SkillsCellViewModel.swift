@@ -13,15 +13,32 @@ class SkillsCellViewModel : RowViewModel {
     let skillName: String
     let skillYears: String
     var imgLogoURL: URL
+    let isImageDataReady = Watcher<Data>(value: Data())
+
         
     init(skill : Skills) {
         self.skillName = skill.skillName
         self.skillYears = skill.experienceYears
         self.imgLogoURL = skill.skillLogo
+        self.getUIImageData()
     }
     
+    //MARK: RowViewModel
     func getCellIdentifier() -> String {
-        return "SkillsTableViewCell"
+        return TableViewCellID.skills.rawValue
     }
+    
+    func getUIImageData() {
+        APIClient.getImageDataFromExternalURL(url: imgLogoURL, completion:  { [weak self]  result in
+            switch result {
+            case .success(let data):
+                self?.isImageDataReady.value = data
+            case .failure( _):
+                //fail silently
+                break
+            }
+        })
+    }
+
 
 }

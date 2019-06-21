@@ -14,15 +14,31 @@ class JobsCellViewModel : RowViewModel {
     let role: String
     let companyName: String
     var imgLogoURL: URL
+    let isImageDataReady = Watcher<Data>(value: Data())
+
     
     init(job : Jobs) {
         self.summary = job.description
         self.role = job.role
         self.companyName = job.company
         self.imgLogoURL = job.companyLogo
+        self.getUIImageData()
     }
     
+    //MARK: RowViewModel
     func getCellIdentifier() -> String {
-        return "JobsTableViewCell"
+        return TableViewCellID.jobs.rawValue
+    }
+    
+    func getUIImageData() {
+        APIClient.getImageDataFromExternalURL(url: imgLogoURL, completion:  { [weak self]  result in
+            switch result {
+            case .success(let data):
+                self?.isImageDataReady.value = data
+            case .failure( _):
+                //fail silently
+                break
+            }
+        })
     }
 }

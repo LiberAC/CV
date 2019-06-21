@@ -13,3 +13,7 @@
 "Summary_section_title" = "Summary";
 "Experience_section_title" = "Experience";
 "Skills_section_title" = "Skills";
+
+"Client_error" = "There was a client error";
+"Server_error" = "There was a server error";
+"Malformed_url" = "Malformed URL";

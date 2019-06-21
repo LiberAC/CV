@@ -16,8 +16,9 @@ class SummaryCellViewModel : RowViewModel {
         self.summary = summary
     }
     
+    //MARK: RowViewModel
     func getCellIdentifier() -> String {
-        return "SummaryTableViewCell"
+        return TableViewCellID.summary.rawValue
     }
-
+    
 }

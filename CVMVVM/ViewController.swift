@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //MARK:  - Attributes
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var titleLabel: UILabel!
     private var loadingIndicatorView: UIActivityIndicatorView!
@@ -25,14 +26,18 @@ class ViewController: UIViewController {
         return listController.viewModel
     }
     
+    
+    //MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         createIndicatorView()
         setupBinding()
         listController.start()
     }
     
+    //MARK: -
+    
+    /// Instanciate and setup the constrainst for the loading indicator
     private func createIndicatorView() {
         loadingIndicatorView = UIActivityIndicatorView.init(style: .gray)
         loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,26 +51,36 @@ class ViewController: UIViewController {
         
     }
     
+    /// Add the bindings for the UI elements
     func setupBinding() {
         viewModel.sectionViewModels.addObserver(fireNow: false) { [weak self] (sectionViewModels) in
             self?.dataSource.currentCVViewModel = self?.viewModel
-            self?.tableView.dataSource = self?.dataSource
-            self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                self?.tableView.dataSource = self?.dataSource
+                self?.tableView.reloadData()
+            }
         }
         
         viewModel.title.addObserver { [weak self] (title) in
-            self?.titleLabel.text = title
+            DispatchQueue.main.async {
+                self?.titleLabel.text = title
+            }
         }
         
         viewModel.isTableViewHidden.addObserver { [weak self] (isHidden) in
-            self?.tableView.isHidden = isHidden
+            DispatchQueue.main.async {
+                self?.tableView.isHidden = isHidden
+            }
         }
         
         viewModel.isLoading.addObserver { [weak self] (isLoading) in
-            if isLoading {
-                self?.loadingIndicatorView.startAnimating()
-            } else {
-                self?.loadingIndicatorView.stopAnimating()
+            DispatchQueue.main.async {
+                if isLoading {
+                    self?.loadingIndicatorView.startAnimating()
+                
+                } else {
+                    self?.loadingIndicatorView.stopAnimating()
+                }
             }
         }
     }

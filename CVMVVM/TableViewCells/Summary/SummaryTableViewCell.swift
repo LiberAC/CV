@@ -10,14 +10,10 @@ import UIKit
 
 class SummaryTableViewCell: UITableViewCell, CellConfigurable {
     
+    //MARK:  - Attributes
     @IBOutlet private weak var lblSummary: UILabel?
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
     
-    //MARK: CellConfigurable
+    //MARK: - CellConfigurable
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? SummaryCellViewModel else {
             return

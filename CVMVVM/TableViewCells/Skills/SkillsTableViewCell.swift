@@ -10,23 +10,24 @@ import UIKit
 
 class SkillsTableViewCell: UITableViewCell, CellConfigurable {
 
+    //MARK:  - Attributes
     @IBOutlet private weak var lblSkillName: UILabel?
     @IBOutlet private weak var lblYears: UILabel?
     @IBOutlet private weak var imgLogo: UIImageView?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
-    //MARK: CellConfigurable
+    //MARK: - CellConfigurable
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? SkillsCellViewModel else {
             return
         }
         lblSkillName?.text = viewModel.skillName
         lblYears?.text = viewModel.skillYears
-        imgLogo?.imageFromExternalURL(url: viewModel.imgLogoURL)
+        
+        viewModel.isImageDataReady.addObserver { [weak self] (data) in
+            DispatchQueue.main.async {
+                self?.imgLogo?.image = UIImage.init(data: data)
+            }
+        }
     }
     
 }

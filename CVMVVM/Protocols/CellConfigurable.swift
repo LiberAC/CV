@@ -8,10 +8,13 @@
 
 import Foundation
 
-protocol RowViewModel {
+/// Protocol to be adopted by the UITableViewCells
+@objc protocol RowViewModel {
     func getCellIdentifier() -> String
+    @objc optional func getUIImageData()
 }
 
+/// Protocol to setup the configuration for UITableViewCells
 protocol CellConfigurable {
     func setup(viewModel: RowViewModel)
 }
