@@ -51,7 +51,8 @@ class ListControllerTest: XCTestCase {
         var aCVData: CVData?
         var anError : Error?
         
-        APIClient.getCVData( completion: { result in
+        let apiClient = APIClient()
+        apiClient.getCVData( completion: { result in
             expectation.fulfill()
             switch result {
             case .success(let cvData):

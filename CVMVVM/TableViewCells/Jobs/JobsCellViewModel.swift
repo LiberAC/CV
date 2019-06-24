@@ -31,7 +31,8 @@ class JobsCellViewModel : RowViewModel {
     }
     
     func getUIImageData() {
-        APIClient.getImageDataFromExternalURL(url: imgLogoURL, completion:  { [weak self]  result in
+        let apiClient = APIClient()
+        apiClient.getImageDataFromExternalURL(url: imgLogoURL, completion:  { [weak self]  result in
             switch result {
             case .success(let data):
                 self?.isImageDataReady.value = data

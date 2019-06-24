@@ -15,64 +15,63 @@ class APIClient {
      Call the webservice to retrieve the cv data.
      
      - Parameters:
-        - completion: A Result Object, either with the CVData in the success case or an Error with the localized cause.
+     - completion: A Result Object, either with the CVData in the success case or an Error with the localized cause.
      */
     
-    static func getCVData(completion:@escaping (Result<CVData, Error>)->Void) {
-        if let url = URL(string: baseURL) {
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                
-                if let error = error {
-                    completion(.failure(error))
-                }
-                
-                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                    completion(.failure(NetworkError.clientError))
-                    return
-                }
-                
-                do {
-                    if let data = data {
-                        let cvData = try JSONDecoder().decode(CVData.self, from: data)
-                        completion(.success(cvData))
-                    }else{
-                        completion(.failure(NetworkError.serverError))
-                    }
- 
-                } catch {
-                    completion(.failure(error))
-                }
-            }
-            task.resume()
-        } else {
+    func getCVData(completion:@escaping (Result<CVData, Error>)->Void) {
+        
+        guard let url = URL(string: baseURL) else{
             completion(.failure(NetworkError.malformedURL))
+            return
         }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+            
+            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                completion(.failure(NetworkError.clientError))
+                return
+            }
+            
+            do {
+                if let data = data {
+                    let cvData = try JSONDecoder().decode(CVData.self, from: data)
+                    completion(.success(cvData))
+                }else{
+                    completion(.failure(NetworkError.serverError))
+                }
+                
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+        
     }
     
     /**
      Call the webservice to retrieve an image data.
      
      - Parameters:
-        - completion: A Result Object, either with the image Data in the success case or an Error with the localized cause.
-        - url: an URL for the external asset
+     - completion: A Result Object, either with the image Data in the success case or an Error with the localized cause.
+     - url: an URL for the external asset
      */
     
-    static func getImageDataFromExternalURL(url: URL, completion:@escaping (Result<Data, Error>)->Void) {
+    func getImageDataFromExternalURL(url: URL,
+                                     completion:@escaping (Result<Data, Error>)->Void) {
         
         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) -> Void in
             
-            if error != nil {
+            guard error == nil, let data = data else {
                 completion(.failure(NetworkError.clientError))
+                return
             }
             
-            if let data = data {
-                completion(.success(data))
-            } else {
-                completion(.failure(NetworkError.serverError))
+            completion(.success(data))
 
-            }
-            
-            
         }).resume()
     }
     

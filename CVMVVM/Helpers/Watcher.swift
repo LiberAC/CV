@@ -23,7 +23,8 @@ class Watcher<T> {
         }
     }
     
-    func addObserver(fireNow: Bool = true, _ onChange: ((T) -> Void)?) {
+    func addObserver(fireNow: Bool = true,
+                     _ onChange: ((T) -> Void)?) {
         valueChanged = onChange
         if fireNow {
             onChange?(value)

@@ -40,7 +40,8 @@ class CVListController {
         self.viewModel.isTableViewHidden.value = true
         self.viewModel.title.value = NSLocalizedString("Loading_legend", comment: "")
         
-        APIClient.getCVData(completion:  { [weak self]  result in
+        let apiClient = APIClient()
+        apiClient.getCVData(completion:  { [weak self]  result in
             switch result {
             case .success(let cvData):
                 self?.viewModel.title.value = NSLocalizedString("My_CV_legend", comment: "")

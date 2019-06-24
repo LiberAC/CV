@@ -11,24 +11,31 @@ import UIKit
 
 class CVDataSource: NSObject, UITableViewDataSource {
     
-    var currentCVViewModel : CVListViewModel!
+    private var currentCVViewModel : CVListViewModel
+    
+    init(viewModel: CVListViewModel) {
+        self.currentCVViewModel = viewModel
+    }
 
     //MARK: Table view Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
         return currentCVViewModel.sectionViewModels.value.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForHeaderInSection section: Int) -> String? {
         let sectionViewModel = currentCVViewModel.sectionViewModels.value[section]
         return sectionViewModel.headerTitle
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         let sectionViewModel = currentCVViewModel.sectionViewModels.value[section]
         return sectionViewModel.rowViewModels.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let sectionViewModel = currentCVViewModel.sectionViewModels.value[indexPath.section]
         let rowViewModel = sectionViewModel.rowViewModels[indexPath.row]
         

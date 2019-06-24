@@ -16,8 +16,7 @@ class DataSourceTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dataSource = CVDataSource()
-        dataSource.currentCVViewModel = CVListViewModel()
+        dataSource = CVDataSource(viewModel: CVListViewModel())
     }
     
     override func tearDown() {
@@ -43,7 +42,9 @@ class DataSourceTests: XCTestCase {
         let summaryRowViewModelB = SummaryCellViewModel.init(summary: "b")
         let summarySectionViewModel = SectionViewModel.init(rowViewModels: [summaryRowViewModelA, summaryRowViewModelB], headerTitle: SectionsName.summary.rawValue)
 
-        dataSource.currentCVViewModel.sectionViewModels.value  = [summarySectionViewModel]
+        let cvViewModel = CVListViewModel()
+        cvViewModel.sectionViewModels.value = [summarySectionViewModel]
+        dataSource = CVDataSource(viewModel: cvViewModel)
 
         let tableView = UITableView()
         tableView.dataSource = dataSource
@@ -60,7 +61,10 @@ class DataSourceTests: XCTestCase {
         let summaryRowViewModelA = SummaryCellViewModel.init(summary: "a")
         let summarySectionViewModel = SectionViewModel.init(rowViewModels: [summaryRowViewModelA], headerTitle: SectionsName.summary.rawValue)
         
-        dataSource.currentCVViewModel.sectionViewModels.value  = [summarySectionViewModel]
+        
+        let cvViewModel = CVListViewModel()
+        cvViewModel.sectionViewModels.value = [summarySectionViewModel]
+        dataSource = CVDataSource(viewModel: cvViewModel)
 
         let tableView = UITableView()
         tableView.dataSource = dataSource

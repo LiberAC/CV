@@ -18,9 +18,7 @@ class ViewController: UIViewController {
 
     private var listController = CVListController()
     
-    private lazy var dataSource: CVDataSource = {
-        return CVDataSource()
-    }()
+    private var dataSource : CVDataSource?
     
     private var viewModel: CVListViewModel {
         return listController.viewModel
@@ -54,7 +52,10 @@ class ViewController: UIViewController {
     /// Add the bindings for the UI elements
     func setupBinding() {
         viewModel.sectionViewModels.addObserver(fireNow: false) { [weak self] (sectionViewModels) in
-            self?.dataSource.currentCVViewModel = self?.viewModel
+            guard let viewModel = self?.viewModel else{
+                return
+            }
+            self?.dataSource = CVDataSource.init(viewModel: viewModel)
             DispatchQueue.main.async {
                 self?.tableView.dataSource = self?.dataSource
                 self?.tableView.reloadData()
